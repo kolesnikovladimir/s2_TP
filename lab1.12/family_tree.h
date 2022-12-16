@@ -13,10 +13,12 @@ public:
 		size = 0;
 		arr = nullptr;
 	}
+
 	int getSize()
 	{
 		return size;
 	}
+
 	member* operator[](int i)
 	{
 		if (i >= size)

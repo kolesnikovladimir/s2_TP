@@ -1,4 +1,6 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
+#include "stdio.h"
 using namespace std;
 
 int scan(const char* _f, void* _x)
@@ -6,7 +8,7 @@ int scan(const char* _f, void* _x)
 	while (1)
 	{
 		printf("input: ");
-		if (scanf(_f, _x) != 1)
+		if (scanf_s(_f, _x) != 1)
 			printf("try again\n");
 		else
 		{
@@ -21,6 +23,14 @@ class date
 {
 	int d; int m; int y;
 public:
+
+	date()
+	{
+		d = 1;
+		m = 12;
+		y = 2000;
+	}
+
 	void edit()
 	{
 		int n = 0;
@@ -59,16 +69,14 @@ public:
 		return (y - obj->gety());
 	}
 
+
 	friend std::ostream& operator<<(std::ostream& out, date& p)
 	{
-		out << p.d << "/" << p.m << "/" << p.y << endl;
+		out << p.d << "/" << p.m << "/" << p.y;
 
-		return out << endl;
+		return out;
 
 	}
-
-
-
 
 };
 
@@ -84,170 +92,6 @@ class member
 	date* birth;
 	date* death;
 	int age;
-
-
-public:
-
-	member()
-	{
-		cout << "new member" << endl;
-	}
-	~member()
-	{
-		cout << "del member" << endl;
-	}
-	string getfio()
-	{
-		return fio;
-	}
-	member* getmom()
-	{
-		return mom;
-	}
-	member* getdad()
-	{
-		return dad;
-	}
-	member* getspouse()
-	{
-		return spouse;
-	}
-	date* getbith() {
-		return birth;
-	}
-	date* getdeath() {
-		return death;
-	}
-	int getage() {
-		return age;
-	}
-
-	void setfio(string f)
-	{
-		fio = f;
-	}
-	void setmom(member* m)
-	{
-		mom = m;
-	}
-
-	void delmom()
-	{
-		delete mom;
-		mom = nullptr;
-	}
-
-	void setdad(member* d)
-	{
-		dad = d;
-	}
-	void deldad()
-	{
-		delete dad;
-		dad = nullptr;
-	}
-
-	void setspouse(member* s)
-	{
-		spouse = s;
-	}
-
-	void delspouse()
-	{
-		delete spouse;
-		spouse = nullptr;
-	}
-
-
-	void addchild()
-	{
-		int originalSize = children_size;
-		children_size++;
-		member* new_child = new member;
-		member** created = new member * [children_size];
-
-		for (int i = 0; i < originalSize; i++)
-		{
-			created[i] = new member;
-			created[i] = children[i];
-		}
-
-		children = created;
-		children[children_size - 1] = new_child;
-	}
-	void cout_children()
-	{
-		for (int i = 0; i < children_size; i++)
-		{
-			cout <<"child " << i << "\n"<<children[i] << endl;
-		}
-	}
-
-	void delchild()
-	{
-		int n = -1;
-		if (children_size == 0)
-		{
-			printf("no records found\n");
-			return;
-		}
-
-		while (n < 1 || n >= children_size)
-		{
-			printf("enter id of element or -1 to exit or %d to see all\n", children_size);
-			scan("%d", &n);
-			if (n == children_size)
-				cout_children();
-			if (n == -1)
-				return;
-		}
-
-		delete children[n];
-		for (int i = n; i < children_size; i++)
-			children[i] = children[i + 1];
-		
-
-		children_size -= 1;
-	}
-	void editchild()
-	{
-		int id = -1;
-		if (children_size == 0)
-		{
-			printf("no records found\n");
-			return;
-		}
-		while (id < 0 || id >= children_size)
-		{
-			printf("there are %d children added\n", children_size);
-			printf("enter id of element or -1 to exit or %d to see all\n", children_size);
-			scan("%d", &id);
-			if (id == -1)
-				return ;
-			if (id == children_size)
-				cout_children();
-		}
-
-		children[id]->menu_edit();
-	}
-	
-	void editbirth()
-	{
-		birth->edit();
-	}
-	void editdeath()
-	{
-		death->edit();
-	}
-
-	void setage()
-	{
-		if (death->gety() != -1)
-			age = *death - birth;
-		else
-			age = 2022 - birth->gety();
-	}
-
 
 	void menu_editfio()
 	{
@@ -390,6 +234,177 @@ public:
 		}
 	}
 
+	string getfio()
+	{
+		return fio;
+	}
+	member* getmom()
+	{
+		return mom;
+	}
+	member* getdad()
+	{
+		return dad;
+	}
+	member* getspouse()
+	{
+		return spouse;
+	}
+	date* getbirth() {
+		return birth;
+	}
+	date* getdeath() {
+		return death;
+	}
+	int getage() {
+		return age;
+	}
+
+	void setfio(string f)
+	{
+		fio = f;
+	}
+	void setmom(member* m)
+	{
+		mom = m;
+	}
+	void delmom()
+	{
+		delete mom;
+		mom = nullptr;
+	}
+
+	void setdad(member* d)
+	{
+		dad = d;
+	}
+	void deldad()
+	{
+		delete dad;
+		dad = nullptr;
+	}
+
+	void setspouse(member* s)
+	{
+		spouse = s;
+	}
+
+	void delspouse()
+	{
+		delete spouse;
+		spouse = nullptr;
+	}
+
+
+	void addchild()
+	{
+		int originalSize = children_size;
+		children_size++;
+		member* new_child = new member;
+		member** created = new member * [children_size];
+
+		for (int i = 0; i < originalSize; i++)
+		{
+			created[i] = new member;
+			created[i] = children[i];
+		}
+
+		children = created;
+		children[children_size - 1] = new_child;
+	}
+	void cout_children()
+	{
+		for (int i = 0; i < children_size; i++)
+		{
+			cout << "child " << i << "\n" << children[i] << endl;
+		}
+	}
+
+	void delchild()
+	{
+		int n = -1;
+		if (children_size == 0)
+		{
+			printf("no records found\n");
+			return;
+		}
+
+		while (n < 1 || n >= children_size)
+		{
+			printf("enter id of element or -1 to exit or %d to see all\n", children_size);
+			scan("%d", &n);
+			if (n == children_size)
+				cout_children();
+			if (n == -1)
+				return;
+		}
+
+		delete children[n];
+		for (int i = n; i < children_size; i++)
+			children[i] = children[i + 1];
+
+
+		children_size -= 1;
+	}
+	void editchild()
+	{
+		int id = -1;
+		if (children_size == 0)
+		{
+			printf("no records found\n");
+			return;
+		}
+		while (id < 0 || id >= children_size)
+		{
+			printf("there are %d children added\n", children_size);
+			printf("enter id of element or -1 to exit or %d to see all\n", children_size);
+			scan("%d", &id);
+			if (id == -1)
+				return;
+			if (id == children_size)
+				cout_children();
+		}
+
+		children[id]->menu_edit();
+	}
+
+	void editbirth()
+	{
+		birth->edit();
+	}
+	void editdeath()
+	{
+		death->edit();
+	}
+
+	void setage()
+	{
+		if (death->gety() != -1)
+			age = *death - birth;
+		else
+			age = 2022 - birth->gety();
+	}
+
+public:
+
+	member()
+	{
+		cout << "new member" << endl;
+		fio = "unknown";
+		mom = nullptr;
+		dad = nullptr;
+		spouse = nullptr;
+		birth = new date();
+		death = new date();
+		setage();
+	}
+
+	~member()
+	{
+		cout << "del member" << endl;
+	}
+
+
 	void menu_edit()
 	{
 		cout << "now values are:\n" << *this << endl;
@@ -404,6 +419,7 @@ public:
 			cout << "5 edit children" << endl;
 			cout << "6 edit birth" << endl;
 			cout << "7 edit death" << endl;
+			cout << "0 see values" << endl;
 			scan("%d", &command);
 			switch (command)
 			{
@@ -428,6 +444,9 @@ public:
 			case 7:
 				menu_editdeath();
 				break;
+			case 0:
+				cout << "now values are:\n" << *this << endl;
+				break;
 			case -1:
 				setage();
 				return;
@@ -444,22 +463,24 @@ public:
 	{
 		if (&p == nullptr)
 		{
-			return out <<  "no info" << endl;
+			return out <<  "no info " ;
 		}
 
 		out << "name: " << p.getfio() << endl;
-		out << "born in: "<< *(p.getbith())<< endl;
+		out << "born in: "<< *(p.getbirth())<< endl;
 
 		if (p.getdeath()->gety() != -1)
-			out << "died in: "<< *(p.getbith())<< endl;
+			out << "died in: "<< *(p.getdeath())<< endl;
 
 		out << "aged: "<<p.getage() << endl;
 		out << "mother: " << *(p.getmom() )<< endl;
 		out << "father: " << *(p.getdad() )<< endl;
 
 		if (p.children_size > 0)
-			out << "children: " << *(p.getdad() )<< endl;
-		
+		{
+			out << "children: ";
+			p.cout_children();
+		}
 
 		return out << endl;
 

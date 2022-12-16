@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include "member.h"
 
@@ -12,17 +13,42 @@ public:
 	{
 		size = 0;
 		arr = nullptr;
+		cout << "new family tree\n" << endl;
+	}
+	~family_tree()
+	{
+		cout << "family tree delete\n" << endl;
 	}
 
-	int getSize()
+	int getsize()
 	{
 		return size;
 	}
 
+	void setsize(int s)
+	{
+		size = s;
+	}
+	
+	member** getarr()
+	{
+		return arr;
+	}
+	void setarr(member** _arr)
+	{
+		arr = _arr;
+	}
 	member* operator[](int i)
 	{
 		if (i >= size)
 			return nullptr;
 		return arr[i];
 	}
+
+	virtual void add_member()	{};
+	virtual void edit_family()	{};
+	virtual void edit_member()	{};
+	virtual void delit_member()	{};
+	virtual void printAll()	{};
+
 };

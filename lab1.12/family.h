@@ -17,8 +17,11 @@ public:
 		}
 
 		for (int i = 0; i < getsize(); i++)
-			cout << "family member N" << i + 1 << *(getarr()[i]) << endl;
-		
+		{
+			cout << "family member N" << i + 1;
+			(getarr()[i])->print();
+
+		}
 	}
 
 
@@ -146,4 +149,12 @@ public:
 	
 	}
 
+
+
+	void filePrint(ostream& fp) override
+	{
+		fp << getsize() << endl;
+		for (int i = 0; i < getsize(); i++)
+			fp << *(getarr()[i]) << endl;
+	}
 };

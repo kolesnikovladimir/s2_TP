@@ -50,5 +50,6 @@ public:
 	virtual void edit_member()	{};
 	virtual void delit_member()	{};
 	virtual void printAll()	{};
+	virtual void filePrint(ostream& fp)	{};
 
 };

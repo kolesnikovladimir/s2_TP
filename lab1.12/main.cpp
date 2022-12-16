@@ -56,7 +56,9 @@ int main()
 			conf.delit();
 			t = 0;	break;
 
-
+		case 6:
+			conf.save();
+			t = 0;	break;
 
 		default:
 			printf("no such command\n");

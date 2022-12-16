@@ -1,6 +1,7 @@
 #pragma once
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
+#include <string>
 #include "stdio.h"
 using namespace std;
 
@@ -76,14 +77,30 @@ public:
 	}
 
 
-	friend std::ostream& operator<<(std::ostream& out, date& p)
+	void print()
 	{
-		out << p.d << "/" << p.m << "/" << p.y;
-
-		return out;
-
+		cout << d << "/" << m << "/" << y;
 	}
 
+	friend std::ostream& operator<<(std::ostream& out, date& p)
+	{
+		out << p.d << endl; 
+		out << p.m << endl; 
+		out << p.y << endl; 
+		return out;
+	}
+
+	friend std::istream& operator>>(std::istream& in, date& p)
+	{
+		int n;
+		in >> n;
+		p.d = n;
+		in >> n;
+		p.m = n;
+		in >> n;
+		p.y = n;
+		return in;
+	}
 };
 
 class member
@@ -103,7 +120,7 @@ class member
 	{
 		string str;
 		cout << "enter new fio" << endl;
-		cin >> str;
+		getline(cin, str);
 		setfio(str);
 	}
 
@@ -323,7 +340,8 @@ class member
 	{
 		for (int i = 0; i < children_size; i++)
 		{
-			cout << "child " << i+1 << "\n" << *children[i] << endl;
+			cout << "child " << i + 1 << "\n";
+			children[i]->print();
 		}
 	}
 
@@ -414,7 +432,8 @@ public:
 
 	void menu_edit()
 	{
-		cout << "now values are:\n" << *this << endl;
+		cout << "now values are:" << endl;
+		print();
 		while (true)
 		{
 			cout << "MEMBER EDIT MENU" << endl;
@@ -453,7 +472,8 @@ public:
 				menu_editdeath();
 				break;
 			case 0:
-				cout << "now values are:\n" << *this << endl;
+				cout << "now values are:" << endl;
+				print();
 				break;
 			case -1:
 				setage();
@@ -466,36 +486,83 @@ public:
 		}
 		
 	}
-
+	
 	friend std::ostream& operator<<(std::ostream& out, member& p)
 	{
 		if (&p == nullptr)
-		{
-			return out <<  "no info " ;
-		}
-
-		out << "\tname: " << p.getfio();
-		if (p.getdeath()->gety() == -1)
-			out << " (" << *(p.getbirth()) << ")" << endl;
+			return out << -1;
+		
 		else
-			out << " (" << *(p.getbirth()) << " - " << *(p.getdeath()) << ")" << " aged: " << p.getage() << endl;
+			out << 1 << endl;
 
-		out << "\tmother: " << *(p.getmom() )<< endl;
-		out << "\tfather: " << *(p.getdad() )<< endl;
-		out << "\tspouse: " << *(p.getspouse() )<< endl;
+		out << p.getfio() << endl;
+		out << *(p.getbirth()) << endl;		
+		out  << *(p.getdeath()) << endl;
+		out << *(p.getmom()) << endl;
+		out << *(p.getdad()) << endl;
+		out << *(p.getspouse()) << endl;
+		out << p.children_size << endl;
+		for(int i = 0; i < p.children_size; i++)
+			out << p.children[i] << endl;
+		
+		return out;
+	}
 
-		if (p.children_size > 0)
+	void print()
+	{
+		if (this == nullptr)
 		{
-			out << "\n\tchildren: ";
-			p.cout_children();
+			cout << "no info ";
+			return; 
 		}
 
-		return out << endl;
+		cout << "\tname: " << getfio();
+		if (getdeath()->gety() == -1)
+		{
+			cout << " ("; 
+			getbirth()->print(); 
+			cout << ")";
+		}
+		else
+		{
+			cout << " (";
+			getbirth()->print();
+			cout << " - ";
+			getdeath()->print();
+			cout << ")";
+		}
+		cout << " aged: " << getage() << endl;
+
+		cout << "\tmother: "; mom->print();
+		cout << "\tfather: "; dad->print();
+		cout << "\tspouse: "; spouse->print();
+
+		if (children_size > 0)
+		{
+			cout << "\n\tchildren: ";
+			cout_children();
+		}
+
+		return;
 
 	}
 	
 	friend std::istream& operator>>(std::istream& in, member& p)
 	{
+		int isthere;
+		in >> isthere;
+		if (isthere == -1)
+			return in;
+		string str;
+		in >> str;
+		p.setfio(str);
+		member* mama = new member;
+		in >> *mama;
+		p.setmom(mama);
+
+		member* dada = new member;
+		in >> *dada;
+		p.setmom(dada);
 
 
 	}

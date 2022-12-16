@@ -2,7 +2,7 @@
 #include <iostream>
 #include "family_tree.h"
 #include "family.h"
-
+#include <fstream>
 class keeper
 {
 	int size;
@@ -104,7 +104,22 @@ public:
 
 	void save()
 	{
+		if (size == 0)
+		{
+			printf("list is empty\n");
+			return;
+		}
 
+		ofstream fout;
+		fout.open("text.txt");
+
+		fout << size << endl;
+		for (int i = 0; i < size; i++)
+		{
+			list[i]->filePrint(fout);
+		}
+
+		fout.close();
 	}
 	void load()
 	{

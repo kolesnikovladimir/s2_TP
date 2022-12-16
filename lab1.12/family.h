@@ -5,6 +5,7 @@
 class family : public family_tree
 {
 
+public:
 
 
 };

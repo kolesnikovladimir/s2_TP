@@ -7,11 +7,12 @@ void list()
 	printf("\n\tlist of main commands:\n");
 	printf("-1 exit programm\n");
 	printf("1 print all FAMILIES\n");
-	//printf("2 search\n");
-	printf("3 add new FAMILY\n");
-	printf("4 edit FAMILY\n");
-	printf("5 delete FAMILY\n");
-	//printf("10 open file settings (save, load, change path)\n");
+	printf("2 add new FAMILY\n");
+	printf("3 edit FAMILY\n");
+	printf("4 delete FAMILY\n");
+	printf("5 save to file\n");
+	printf("6 load from file\n");
+
 	printf("\n");
 }
 
@@ -38,11 +39,11 @@ int main()
 		t = 0; break;
 
 		
-		case 3:
+		case 2:
 			conf.add();
 			t = 0;	break;
 
-		case 4:
+		case 3:
 			try {
 				conf.edit();
 			}
@@ -52,14 +53,15 @@ int main()
 			}
 			t = 0;	break;
 
-		case 5:
+		case 4:
 			conf.delit();
 			t = 0;	break;
 
-		case 6:
+		case 5:
 			conf.save();
 			t = 0;	break;
-		case 7:
+
+		case 6:
 			try {
 				conf.load();
 			}

@@ -288,7 +288,14 @@ class member
 	{
 		fio = f;
 	}
-
+	void setbirth(date* bd)
+	{
+		birth = bd;
+	}
+	void setdeath(date* dd)
+	{
+		death = dd;
+	}
 	void setmom(member* m)
 	{
 		mom = m;
@@ -319,7 +326,25 @@ class member
 		spouse = nullptr;
 	}
 
+	void setchildren_size(int n)
+	{
+		children_size = n;
+	}
+	void addchild(member* chld)
+	{
+		int originalSize = children_size;
+		children_size++;
+		member** created = new member * [children_size];
 
+		for (int i = 0; i < originalSize; i++)
+		{
+			created[i] = new member;
+			created[i] = children[i];
+		}
+
+		children = created;
+		children[children_size - 1] = chld;
+	}
 	void addchild()
 	{
 		int originalSize = children_size;
@@ -490,17 +515,18 @@ public:
 	friend std::ostream& operator<<(std::ostream& out, member& p)
 	{
 		if (&p == nullptr)
-			return out << -1;
-		
+			return out << -1;	
 		else
 			out << 1 << endl;
 
 		out << p.getfio() << endl;
 		out << *(p.getbirth()) << endl;		
-		out  << *(p.getdeath()) << endl;
+		out << *(p.getdeath()) << endl;
+
 		out << *(p.getmom()) << endl;
 		out << *(p.getdad()) << endl;
 		out << *(p.getspouse()) << endl;
+
 		out << p.children_size << endl;
 		for(int i = 0; i < p.children_size; i++)
 			out << p.children[i] << endl;
@@ -533,13 +559,13 @@ public:
 		}
 		cout << " aged: " << getage() << endl;
 
-		cout << "\tmother: "; mom->print();
-		cout << "\tfather: "; dad->print();
-		cout << "\tspouse: "; spouse->print();
+		cout << "\n\tmother:\n\t\t"; mom->print();
+		cout << "\n\tfather:\n\t\t"; dad->print();
+		cout << "\n\tspouse:\n\t\t"; spouse->print();
 
 		if (children_size > 0)
 		{
-			cout << "\n\tchildren: ";
+			cout << "\n\n\tchildren: ";
 			cout_children();
 		}
 
@@ -552,19 +578,78 @@ public:
 		int isthere;
 		in >> isthere;
 		if (isthere == -1)
+		{
+			throw isthere;
 			return in;
+		}
 		string str;
-		in >> str;
+		getline(in, str);
+		getline(in, str);
 		p.setfio(str);
+
+		date* dt = new date;
+		in >> *dt;
+		p.setbirth(dt);
+
+		date* dd = new date;
+		in >> *dd;
+		p.setdeath(dd);
+
 		member* mama = new member;
-		in >> *mama;
+		try {
+			in >> *mama;
+		}
+		catch (int c)
+		{
+			if (c == -1)
+				mama = nullptr;
+			else
+				throw c;
+		}
 		p.setmom(mama);
 
 		member* dada = new member;
-		in >> *dada;
-		p.setmom(dada);
+		
+		try {
+			in >> *dada;
+		}
+		catch (int c)
+		{
+			if (c == -1)
+				dada = nullptr;
+			else
+				throw c;
+		}
+		p.setdad(dada);
 
+		member* sps = new member;
 
+		try {
+			in >> *sps;
+		}
+		catch (int c)
+		{
+			if (c == -1)
+				sps = nullptr;
+			else
+				throw c;
+		}
+		p.setspouse(sps);
+
+		int child_count = 0;
+		in >> child_count;
+		if (child_count < 0)
+			throw (string)"size less than zero";
+		if (child_count == 0)
+			p.setchildren_size(0);
+
+		for (int i = 0; i < child_count; i++)
+		{
+			member* new_child = new member;
+			in >> *new_child;
+			p.addchild(new_child);
+
+		}
 	}
 
 

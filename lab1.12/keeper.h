@@ -23,8 +23,9 @@ public:
 	{
 		for (int i = 0; i < size; i++)
 		{
-			cout << "\tfamily N" << i + 1 << endl;
+			cout << "\n\tfamily N" << i + 1 << endl;
 			((family*)list[i])->printAll();
+			cout << endl;
 		}
 	}
 
@@ -45,6 +46,25 @@ public:
 		list[size - 1] = new_family;
 		cout << "\tadded!" << endl;
 	}
+
+
+	void add(family* new_family)
+	{
+		int originalSize = size;
+		size++;
+		family_tree** created = new family_tree * [size];
+
+		for (int i = 0; i < originalSize; i++)
+		{
+			created[i] = new family_tree;
+			created[i] = list[i];
+		}
+
+		list = created;
+		list[size - 1] = new_family;
+		cout << "\tadded!" << endl;
+	}
+
 
 	int edit()
 	{
@@ -121,9 +141,23 @@ public:
 
 		fout.close();
 	}
+	
 	void load()
 	{
+		ifstream fin;
+		fin.open("text.txt");
+		int s;
+		fin >> s;
+		if (s < 0)
+			throw (string)"size less than zero";
+		for (int i = 0; i < s; i++)
+		{
+			family* new_family = new family;
+			fin >> *new_family;
+			add(new_family);
+		}
 
+		fin.close();
 	}
 
 };

@@ -46,10 +46,12 @@ public:
 	}
 
 	virtual void add_member()	{};
+	virtual void add_member(member* new_member)	{};
 	virtual void edit_family()	{};
 	virtual void edit_member()	{};
 	virtual void delit_member()	{};
 	virtual void printAll()	{};
 	virtual void filePrint(ostream& fp)	{};
+	
 
 };

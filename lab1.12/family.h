@@ -18,9 +18,9 @@ public:
 
 		for (int i = 0; i < getsize(); i++)
 		{
-			cout << "family member N" << i + 1;
+			cout << "\nfamily member N" << i + 1 << endl;;
 			(getarr()[i])->print();
-
+			cout << endl;
 		}
 	}
 
@@ -92,6 +92,24 @@ public:
 		setsize(size);
 	}
 
+	void add_member(member* new_member) override
+	{
+		int originalSize = getsize();
+		int size = originalSize + 1;
+		
+		member** created = new member * [size];
+		member** old = getarr();
+		for (int i = 0; i < originalSize; i++)
+		{
+			created[i] = new member;
+			created[i] = old[i];
+		}
+
+		old = created;
+		created[size - 1] = new_member;
+		setarr(created);
+		setsize(size);
+	}
 
 	void edit_member() override
 	{
@@ -157,4 +175,29 @@ public:
 		for (int i = 0; i < getsize(); i++)
 			fp << *(getarr()[i]) << endl;
 	}
+
+	friend std::istream& operator>>(std::istream& in, family& p)
+	{
+		int s;
+		in >> s;
+		if (s < 0)
+			throw (string)"size less than zero";
+		for (int i = 0; i < s; i++)
+		{
+			member* new_member = new member;
+			try {
+				in >> *new_member;
+			}
+			catch (int c)
+			{
+				if (c == -1)
+					new_member = nullptr;
+				else
+					throw c;
+			}
+			p.add_member(new_member);
+		}
+		return in;
+	}
+
 };

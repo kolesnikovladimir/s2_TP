@@ -59,6 +59,20 @@ int main()
 		case 6:
 			conf.save();
 			t = 0;	break;
+		case 7:
+			try {
+				conf.load();
+			}
+			catch (int c)
+			{
+				cout << "exeption caugth when loading: met " << c<< "where 1 or -1 should be"<<endl;
+			}
+			catch(string str)
+			{
+				cout << "exeption caugth when loadin: " << str << endl;
+			}
+
+			t = 0;	break;
 
 		default:
 			printf("no such command\n");

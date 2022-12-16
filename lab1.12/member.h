@@ -64,6 +64,11 @@ public:
 		return y;
 	}
 
+	void operator =(int i)
+	{
+		y = i;
+	}
+
 	int operator-(date* obj)
 	{
 		return (y - obj->gety());
@@ -95,19 +100,10 @@ class member
 
 	void menu_editfio()
 	{
-		int command = 0;
-		while (command != -1 && command != 1)
-		{
-			cout << "fio "; cout << "1 edit; -1 exit" << endl;
-			scan("%d", &command);
-		}
 		string str;
-		if (command == 1)
-		{
-			cout << "enter new fio" << endl;
-			cin >> str;
-			setfio(str);
-		}
+		cout << "enter new fio" << endl;
+		cin >> str;
+		setfio(str);
 	}
 
 	void menu_editmom()
@@ -154,39 +150,47 @@ class member
 
 	void menu_editchildren()
 	{
-		int command = 0;
-		while (command != -1 && command != 1)
-		{
-			cout << "children "; cout << "1 edit; -1 exit" << endl;
-			scan("%d", &command);
-		}
-		if (command == 1)
-		{
-			cout_children();
-			cout << "1 add child\n2 edit child\n3 del child\n0 exit edit" << endl;
-			int c = -2;
-			while (c != -1) {
-				scan("%d", &c);
-				switch (c)
+		cout_children();
+			
+		int c = -2;
+		while (c != -1) {
+			cout << "\n\tCHILDREN EDIT MENU"<< endl;
+			cout << "1 add child\n2 edit child\n3 del child\n0 see all children\n-1 exit edit" << endl;
+			scan("%d", &c);
+			switch (c)
+			{
+			case 1:
+				addchild(); c = 0;
+				break;
+			case 2:
+				if (children_size == 0)
 				{
-				case 1:
-					addchild(); c = 0;
+					cout << "none added" << endl;
 					break;
-				case 2:
-					editchild(); c = 0;
-					break;
-				case 3:
-					delchild(); c = 0;
-					break;
-				case 0:
-					c = -1;
-					break;
-
-				default:
-					cout << "unknown command" << endl;
 				}
+					editchild(); c = 0;
+				break;
+			case 3:
+				if (children_size == 0)
+				{
+					cout << "nonde added" << endl;
+					break;
+				}
+				delchild(); c = 0;
+				break;
+
+			case 0:
+				cout_children(); c = 0;
+				break;
+			case -1:
+				c = -1;
+				break;
+
+			default:
+				cout << "unknown command" << endl;
 			}
 		}
+		
 	}
 
 	void menu_editspouse()
@@ -200,6 +204,8 @@ class member
 		if (command == 1)
 		{
 			cout << "enter new spouse info" << endl;
+			if (spouse == nullptr)
+				spouse = new member;
 			spouse->menu_edit();
 		}
 	}
@@ -264,6 +270,7 @@ class member
 	{
 		fio = f;
 	}
+
 	void setmom(member* m)
 	{
 		mom = m;
@@ -288,7 +295,6 @@ class member
 	{
 		spouse = s;
 	}
-
 	void delspouse()
 	{
 		delete spouse;
@@ -316,7 +322,7 @@ class member
 	{
 		for (int i = 0; i < children_size; i++)
 		{
-			cout << "child " << i << "\n" << children[i] << endl;
+			cout << "child " << i+1 << "\n" << *children[i] << endl;
 		}
 	}
 
@@ -395,7 +401,7 @@ public:
 		dad = nullptr;
 		spouse = nullptr;
 		birth = new date();
-		death = new date();
+		death = new date(); *death = -1;
 		setage();
 	}
 
@@ -410,6 +416,7 @@ public:
 		cout << "now values are:\n" << *this << endl;
 		while (true)
 		{
+			cout << "MEMBER EDIT MENU" << endl;
 			int command = 0;
 			cout << "-1 to exit editing" << endl;
 			cout << "1 edit fio" << endl;
@@ -454,9 +461,9 @@ public:
 			default:
 				cout << "unknown" << endl;
 			}
-			
+			setage();
 		}
-		setage();
+		
 	}
 
 	friend std::ostream& operator<<(std::ostream& out, member& p)
@@ -466,19 +473,19 @@ public:
 			return out <<  "no info " ;
 		}
 
-		out << "name: " << p.getfio() << endl;
-		out << "born in: "<< *(p.getbirth())<< endl;
+		out << "\tname: " << p.getfio();
+		if (p.getdeath()->gety() == -1)
+			out << " (" << *(p.getbirth()) << ")" << endl;
+		else
+			out << " (" << *(p.getbirth()) << " - " << *(p.getdeath()) << ")" << " aged: " << p.getage() << endl;
 
-		if (p.getdeath()->gety() != -1)
-			out << "died in: "<< *(p.getdeath())<< endl;
-
-		out << "aged: "<<p.getage() << endl;
-		out << "mother: " << *(p.getmom() )<< endl;
-		out << "father: " << *(p.getdad() )<< endl;
+		out << "\tmother: " << *(p.getmom() )<< endl;
+		out << "\tfather: " << *(p.getdad() )<< endl;
+		out << "\tspouse: " << *(p.getspouse() )<< endl;
 
 		if (p.children_size > 0)
 		{
-			out << "children: ";
+			out << "\n\tchildren: ";
 			p.cout_children();
 		}
 

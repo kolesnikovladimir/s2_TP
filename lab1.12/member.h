@@ -23,8 +23,32 @@ class date
 public:
 	void edit()
 	{
-
+		int n = 0;
+		
+		while (n <= 0 || n > 31)
+		{
+			cout << "enter day: ";
+			scan("%d", &n);
+		}
+		d = n;
+		n = 0;
+		
+		while (n <= 0 || n > 12)
+		{
+			cout << "enter month: ";
+			scan("%d", &n);
+		}
+		m = n;
+		n = 0;
+		
+		while (n <= 0 )
+		{
+			cout << "enter year: ";
+			scan("%d", &n);
+		}
+		y = n;
 	}
+
 	int gety()
 	{
 		return y;
@@ -42,6 +66,7 @@ public:
 		return out << endl;
 
 	}
+
 
 
 
@@ -97,8 +122,6 @@ public:
 		return age;
 	}
 
-
-
 	void setfio(string f)
 	{
 		fio = f;
@@ -107,10 +130,7 @@ public:
 	{
 		mom = m;
 	}
-	void editmom()
-	{
-		mom->edit();
-	}
+
 	void delmom()
 	{
 		delete mom;
@@ -121,15 +141,23 @@ public:
 	{
 		dad = d;
 	}
-	void editdad()
-	{
-		dad->edit();		
-	}
 	void deldad()
 	{
 		delete dad;
 		dad = nullptr;
 	}
+
+	void setspouse(member* s)
+	{
+		spouse = s;
+	}
+
+	void delspouse()
+	{
+		delete spouse;
+		spouse = nullptr;
+	}
+
 
 	void addchild()
 	{
@@ -149,7 +177,10 @@ public:
 	}
 	void cout_children()
 	{
-
+		for (int i = 0; i < children_size; i++)
+		{
+			cout <<"child " << i << "\n"<<children[i] << endl;
+		}
 	}
 
 	void delchild()
@@ -178,7 +209,6 @@ public:
 
 		children_size -= 1;
 	}
-
 	void editchild()
 	{
 		int id = -1;
@@ -189,7 +219,7 @@ public:
 		}
 		while (id < 0 || id >= children_size)
 		{
-			printf("there are %d elements added\n", children_size);
+			printf("there are %d children added\n", children_size);
 			printf("enter id of element or -1 to exit or %d to see all\n", children_size);
 			scan("%d", &id);
 			if (id == -1)
@@ -198,16 +228,9 @@ public:
 				cout_children();
 		}
 
-		try {
-			children[id]->edit();
-		}
-		catch (char* m)
-		{
-			throw m;
-		}
-
+		children[id]->menu_edit();
 	}
-
+	
 	void editbirth()
 	{
 		birth->edit();
@@ -226,18 +249,204 @@ public:
 	}
 
 
-	void edit()
+	void menu_editfio()
 	{
-		cout<<"now values are:\n" << *this << endl;
+		int command = 0;
+		while (command != -1 && command != 1)
+		{
+			cout << "fio "; cout << "1 edit; -1 exit" << endl;
+			scan("%d", &command);
+		}
+		string str;
+		if (command == 1)
+		{
+			cout << "enter new fio" << endl;
+			cin >> str;
+			setfio(str);
+		}
+	}
 
-		int command = -1;
-		cout << "to skip editing enter -1\n" << endl;
+	void menu_editmom()
+	{
+		int command = 0;
+		while (command != -1 && command != 1 && command != 2)
+		{
+			cout << "mother "; cout << "1 edit; 2 delete; -1 exit" << endl;
+			scan("%d", &command);
+		}
+		if (command == 1)
+		{
+			cout << "enter new mother info" << endl;
+			if (mom == nullptr)
+				mom = new member;
+			mom->menu_edit();
+		}
+		if (command == 2)
+		{
+			delmom();
+		}
+	}
 
+	void menu_editdad()
+	{
+		int command = 0;
+		while (command != -1 && command != 1 && command != 2)
+		{
+			cout << "father "; cout << "1 edit; 2 delete; -1 exit" << endl;
+			scan("%d", &command);
+		}
+		if (command == 1)
+		{
+			cout << "enter new father info" << endl;
+			if (dad == nullptr)
+				dad = new member;
+			dad->menu_edit();
+		}
+		if (command == 2)
+		{
+			deldad();
+		}
+	}
 
+	void menu_editchildren()
+	{
+		int command = 0;
+		while (command != -1 && command != 1)
+		{
+			cout << "children "; cout << "1 edit; -1 exit" << endl;
+			scan("%d", &command);
+		}
+		if (command == 1)
+		{
+			cout_children();
+			cout << "1 add child\n2 edit child\n3 del child\n0 exit edit" << endl;
+			int c = -2;
+			while (c != -1) {
+				scan("%d", &c);
+				switch (c)
+				{
+				case 1:
+					addchild(); c = 0;
+					break;
+				case 2:
+					editchild(); c = 0;
+					break;
+				case 3:
+					delchild(); c = 0;
+					break;
+				case 0:
+					c = -1;
+					break;
+
+				default:
+					cout << "unknown command" << endl;
+				}
+			}
+		}
+	}
+
+	void menu_editspouse()
+	{
+		int command = 0;
+		while (command != -1 && command != 1)
+		{
+			cout << "spouse "; cout << "1 edit; -1 exit" << endl;
+			scan("%d", &command);
+		}
+		if (command == 1)
+		{
+			cout << "enter new spouse info" << endl;
+			spouse->menu_edit();
+		}
+	}
+
+	void menu_editbirth()
+	{
+		int command = 0;
+		while (command != -1 && command != 1)
+		{
+			cout << "birth "; cout << "1 edit; -1 exit" << endl;
+			scan("%d", &command);
+		}
+		if (command == 1)
+		{
+			cout << "enter new birth info" << endl;
+			birth->edit();
+		}
+	}
+
+	void menu_editdeath()
+	{
+		int command = 0;
+		while (command != -1 && command != 1)
+		{
+			cout << "death "; cout << "1 edit; -1 exit" << endl;
+			scan("%d", &command);
+		}
+		if (command == 1)
+		{
+			cout << "enter new death info" << endl;
+			death->edit();
+		}
+	}
+
+	void menu_edit()
+	{
+		cout << "now values are:\n" << *this << endl;
+		while (true)
+		{
+			int command = 0;
+			cout << "-1 to exit editing" << endl;
+			cout << "1 edit fio" << endl;
+			cout << "2 edit mother" << endl;
+			cout << "3 edit father" << endl;
+			cout << "4 edit spouse" << endl;
+			cout << "5 edit children" << endl;
+			cout << "6 edit birth" << endl;
+			cout << "7 edit death" << endl;
+			scan("%d", &command);
+			switch (command)
+			{
+			case 1:
+				menu_editfio();
+				break;
+			case 2:
+				menu_editmom();
+				break;
+			case 3:
+				menu_editdad();
+				break;
+			case 4:
+				menu_editspouse();
+				break;
+			case 5:
+				menu_editchildren();
+				break;
+			case 6:
+				menu_editbirth();
+				break;
+			case 7:
+				menu_editdeath();
+				break;
+			case -1:
+				setage();
+				return;
+
+			default:
+				cout << "unknown" << endl;
+			}
+			
+		}
+		setage();
 	}
 
 	friend std::ostream& operator<<(std::ostream& out, member& p)
 	{
+		if (&p == nullptr)
+		{
+			return out <<  "no info" << endl;
+		}
+
 		out << "name: " << p.getfio() << endl;
 		out << "born in: "<< *(p.getbith())<< endl;
 
@@ -255,14 +464,12 @@ public:
 		return out << endl;
 
 	}
+	
 	friend std::istream& operator>>(std::istream& in, member& p)
 	{
 
 
 	}
-
-
-
 
 
 };

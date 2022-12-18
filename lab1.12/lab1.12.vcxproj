@@ -140,6 +140,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="date.cpp" />
+    <ClCompile Include="family.cpp" />
+    <ClCompile Include="family_tree.cpp" />
     <ClCompile Include="keeper.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="member.cpp" />

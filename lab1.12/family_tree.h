@@ -7,43 +7,15 @@ class family_tree
 	int size;
 	member** arr;
 
-
 public:
-	family_tree()
-	{
-		size = 0;
-		arr = nullptr;
-		cout << "new family tree\n" << endl;
-	}
-	~family_tree()
-	{
-		cout << "family tree delete\n" << endl;
-	}
-
-	int getsize()
-	{
-		return size;
-	}
-
-	void setsize(int s)
-	{
-		size = s;
-	}
+	family_tree();
+	~family_tree();
+	int getsize();
+	void setsize(int s);
+	member** getarr();
+	void setarr(member** _arr);
 	
-	member** getarr()
-	{
-		return arr;
-	}
-	void setarr(member** _arr)
-	{
-		arr = _arr;
-	}
-	member* operator[](int i)
-	{
-		if (i >= size)
-			return nullptr;
-		return arr[i];
-	}
+	member* operator[](int i);
 
 	virtual void add_member()	{};
 	virtual void add_member(member* new_member)	{};
@@ -53,5 +25,4 @@ public:
 	virtual void printAll()	{};
 	virtual void filePrint(ostream& fp)	{};
 	
-
 };

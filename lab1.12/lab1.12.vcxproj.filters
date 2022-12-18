@@ -27,6 +27,12 @@
     <ClCompile Include="date.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="family.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="family_tree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="keeper.h">

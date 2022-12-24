@@ -14,8 +14,6 @@ using namespace std;
 
 int main()
 {
-	
-
 	ifstream fin;
 	fin.open("text.txt");
 	if (!fin.is_open())

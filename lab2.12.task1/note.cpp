@@ -19,13 +19,16 @@ using namespace std;
 
 	bool note::operator>(note& obj)
 	{
-		if (this->BD[YEAR] > obj.BD[YEAR])
+		int data1 = this->BD[YEAR] * 10000 + this->BD[MONTH] * 100 + this->BD[DAY];
+		int data2 = obj.BD[YEAR] * 10000 + obj.BD[MONTH] * 100 + obj.BD[DAY];
+		/*if (this->BD[YEAR] > obj.BD[YEAR])
 			return true;
 		if (this->BD[MONTH] > obj.BD[MONTH])
 			return true;
 		if (this->BD[DAY] > obj.BD[DAY])
 			return true;
-		return false;
+		return false;*/
+		return (data1 > data2);
 	}
 
 	void note::setName(string n)
